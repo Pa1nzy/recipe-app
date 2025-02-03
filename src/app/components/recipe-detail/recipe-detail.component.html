@@ -1,0 +1,22 @@
+<div *ngIf="recipe; else loading">
+  <h2>{{ recipe?.title || 'No Title' }}</h2>
+  <p>{{ recipe?.description || 'No Description' }}</p>
+  <h3>{{ recipe?.category || 'No Category' }}</h3>
+  <h4>{{ recipe?.cookingTime || 'No Time' }} minutes</h4>
+  <h5>{{ recipe?.difficulty || 'No Difficulty' }}</h5>
+
+  <ul>
+    <li *ngFor="let ingredient of recipe?.ingredients">
+      {{ ingredient?.name }} - {{ ingredient?.quantity }}
+    </li>
+  </ul>
+
+  <img *ngIf="recipe?.imageUrl" [src]="recipe?.imageUrl" alt="Recipe Image" />
+</div>
+
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>
+
+<!-- Debugging: Display the recipe object directly -->
+<pre>{{ recipe | json }}</pre>

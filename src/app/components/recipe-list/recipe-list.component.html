@@ -1,0 +1,93 @@
+<div class="container">
+  <h1>Recipe List</h1>
+
+  <!-- Add Recipe Button -->
+  <button class="add-recipe-btn" (click)="openAddRecipeForm()">Add New Recipe</button>
+
+  <!-- Search Bar -->
+  <input
+    type="text"
+    placeholder="Search recipes..."
+    [(ngModel)]="searchQuery"
+    (input)="searchRecipes()"
+    class="search-input"
+  />
+
+  <!-- Toggle between list and grid view -->
+  <div class="view-toggle">
+    <button (click)="toggleView()">Toggle View</button>
+  </div>
+
+  <!-- Display Recipes -->
+  <div *ngIf="viewMode === 'list'" class="recipe-list">
+    <div *ngFor="let recipe of filteredRecipes" class="recipe-item">
+      <img [src]="recipe.imageUrl" alt="Recipe Image" />
+      <div class="recipe-info">
+        <h2>{{ recipe.title }}</h2>
+        <p>{{ recipe.description }}</p>
+        <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
+        <p><strong>Cooking Time:</strong> {{ recipe.cookingTime }} mins</p>
+        <button (click)="viewDetails(recipe.id)">View Details</button>
+        <button (click)="openEditRecipeForm(recipe)">Edit</button>
+        <button (click)="deleteRecipe(recipe.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="viewMode === 'grid'" class="recipe-grid">
+    <div *ngFor="let recipe of filteredRecipes" class="recipe-item">
+      <img [src]="recipe.imageUrl" alt="Recipe Image" />
+      <h3>{{ recipe.title }}</h3>
+      <button (click)="viewDetails(recipe.id)">View Details</button>
+      <button (click)="openEditRecipeForm(recipe)">Edit</button>
+      <button (click)="deleteRecipe(recipe.id)">Delete</button>
+    </div>
+  </div>
+
+  <!-- Add/Edit Recipe Form Modal -->
+  <div *ngIf="isFormOpen" class="recipe-form-modal">
+    <form (ngSubmit)="submitForm()">
+      <label>Title</label>
+      <input [(ngModel)]="recipeForm.title" name="title" required />
+
+      <label>Description</label>
+      <input [(ngModel)]="recipeForm.description" name="description" required />
+
+      <label>Ingredients</label>
+      <div *ngFor="let ingredient of recipeForm.ingredients; let i = index">
+        <input
+          [(ngModel)]="ingredient.name"
+          name="ingredient-name-{{ i }}"
+          placeholder="Ingredient name"
+          required
+        />
+        <input
+          [(ngModel)]="ingredient.quantity"
+          name="ingredient-quantity-{{ i }}"
+          placeholder="Quantity"
+          required
+        />
+      </div>
+      <button type="button" (click)="addIngredient()">Add Ingredient</button>
+
+      <label>Instructions</label>
+      <textarea [(ngModel)]="recipeForm.instructions" name="instructions" required></textarea>
+
+      <label>Cooking Time (mins)</label>
+      <input [(ngModel)]="recipeForm.cookingTime" name="cookingTime" type="number" required />
+
+      <label>Difficulty Level</label>
+      <select [(ngModel)]="recipeForm.difficulty" name="difficulty" required>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+
+      <label>Image URL</label>
+      <input [(ngModel)]="recipeForm.imageUrl" name="imageUrl" required />
+
+      <button type="submit">{{ isEditing ? 'Update Recipe' : 'Add Recipe' }}</button>
+      <button type="button" (click)="closeForm()">Cancel</button>
+    </form>
+  </div>
+</div>

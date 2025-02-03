@@ -1,0 +1,41 @@
+<div class="meal-planner-container">
+  <div class="week">
+    <div *ngFor="let day of mealPlan | keyvalue" class="day-column">
+      <h3>{{ day.key | titlecase }}</h3>
+      
+      <!-- Breakfast -->
+      <div class="meal-slot" cdkDropList [cdkDropListData]="day.value['breakfast']" (cdkDropListDropped)="onDrop($event, day.key, 'breakfast')">
+        <h4>Breakfast</h4>
+        <div *ngFor="let recipe of day.value['breakfast']" cdkDrag class="recipe-item">
+          {{ recipe.title }}  <!-- Adjust according to your recipe property -->
+        </div>
+      </div>
+      <button (click)="clearMealSlot(day.key, 'breakfast')">Clear Breakfast</button>
+      
+      <!-- Lunch -->
+      <div class="meal-slot" cdkDropList [cdkDropListData]="day.value['lunch']" (cdkDropListDropped)="onDrop($event, day.key, 'lunch')">
+        <h4>Lunch</h4>
+        <div *ngFor="let recipe of day.value['lunch']" cdkDrag class="recipe-item">
+          {{ recipe.title }}  <!-- Adjust according to your recipe property -->
+        </div>
+      </div>
+      <button (click)="clearMealSlot(day.key, 'lunch')">Clear Lunch</button>
+      
+      <!-- Dinner -->
+      <div class="meal-slot" cdkDropList [cdkDropListData]="day.value['dinner']" (cdkDropListDropped)="onDrop($event, day.key, 'dinner')">
+        <h4>Dinner</h4>
+        <div *ngFor="let recipe of day.value['dinner']" cdkDrag class="recipe-item">
+          {{ recipe.title }}  <!-- Adjust according to your recipe property -->
+        </div>
+      </div>
+      <button (click)="clearMealSlot(day.key, 'dinner')">Clear Dinner</button>
+    </div>
+  </div>
+  
+  <div class="recipes">
+    <h3>Available Recipes</h3>
+    <div *ngFor="let recipe of recipes" cdkDrag class="available-recipe">
+      {{ recipe.title }}  <!-- Adjust according to your recipe property -->
+    </div>
+  </div>
+</div>
